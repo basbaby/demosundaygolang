@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demosundaygolang
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: demosundaygolang
+  template:
+    metadata:
+      labels:
+        name: demosundaygolang
+    spec:
+      containers:
+      - image: njclabslimitedcontainerreg.azurecr.io/njclabslimitedcontainerrepo:demosundaygolang
+        name: njclabslimitedcontainerreg
+        ports:
+          - containerPort: 8081
+      imagePullSecrets: 
+      - name: demosundaygolangsecret
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demosundaygolang-service
+spec:
+  type: LoadBalancer
+  selector:
+    name: demosundaygolang
+  ports:
+  - name: http  
+    port: 80
+    targetPort: 8081
